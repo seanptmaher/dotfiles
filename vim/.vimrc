@@ -9,15 +9,21 @@ set background=dark             " Use colours that work well on a dark backgroun
 set showmode                    " show the current mode
 set clipboard=unnamed           " set clipboard to unnamed to access the system clipboard under windows
 syntax on                       " turn syntax highlighting on by default
+set title
 set t_Co=256                    " have proper colours, also makes airlline work
 set expandtab
+set hlsearch
 "spaces, not tabs
-set tabstop=4
-set shiftwidth=4
+set tabstop=8
+set shiftwidth=8
+set softtabstop=8
 set termguicolors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 let g:deus_termcolors=256
+
+set autochdir 
+set tags+=./tags;
 
 
 filetype off                  " required
@@ -42,6 +48,7 @@ Plugin 'morhetz/gruvbox'
 Plugin 'justinmk/vim-sneak'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'vim-syntastic/syntastic'
+Plugin 'ctrlpvim/ctrlp.vim'
 
 Plugin 'xero/blaquemagick.vim'
 Plugin 'junegunn/seoul256.vim'
@@ -78,6 +85,10 @@ nmap <silent> ,y :new<CR>:call setline(1,getregtype())<CR>o<Esc>P:wq! ~/reg.txt<
 map <silent> ,p :sview ~/reg.txt<CR>"zdddG:q!<CR>:call setreg('"', @", @z)<CR>p
 map <silent> ,P :sview ~/reg.txt<CR>"zdddG:q!<CR>:call setreg('"', @", @z)<CR>P
 
+" Press Space to turn off highlighting and clear any message already displayed.
+nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+
+
 "syntastic defaults
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -89,3 +100,7 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 hi Normal guibg=NONE ctermbg=NONE
+
+"ctrlp
+let g:ctrlp_map = '<c-p>'
+
