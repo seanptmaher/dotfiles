@@ -25,7 +25,6 @@ let g:deus_termcolors=256
 set autochdir 
 set tags+=./tags;
 
-
 filetype off                  " required
 
 
@@ -49,19 +48,17 @@ Plugin 'justinmk/vim-sneak'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'wesQ3/vim-windowswap'
 
 Plugin 'xero/blaquemagick.vim'
 Plugin 'junegunn/seoul256.vim'
 Bundle 'ajmwagar/vim-deus'
 Bundle 'sjl/badwolf'
 Plugin 'christophermca/meta5'
-
+Plugin 'reedes/vim-colors-pencil'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
 " Brief help
 " :PluginList       - lists configured plugins
 " :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
@@ -69,21 +66,19 @@ filetype plugin indent on    " required
 " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
 "
 " see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+" /vundle
 
 " NERDtree auto exit
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup nerdtree
+        autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup END
 
 "let g:ycm_global_ycm_extra_conf = '/usr/share/vim/vimfiles/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py
 "let g:ycm_confirm_extra_conf = 0
 
-   
-colorscheme gruvbox 
-let g:gruvbox_contrast_dark = 'hard'
-vmap <silent> ,y y:new<CR>:call setline(1,getregtype())<CR>o<Esc>P:wq! ~/reg.txt<CR>
-nmap <silent> ,y :new<CR>:call setline(1,getregtype())<CR>o<Esc>P:wq! ~/reg.txt<CR>
-map <silent> ,p :sview ~/reg.txt<CR>"zdddG:q!<CR>:call setreg('"', @", @z)<CR>p
-map <silent> ,P :sview ~/reg.txt<CR>"zdddG:q!<CR>:call setreg('"', @", @z)<CR>P
+colorscheme pencil   
+"colorscheme gruvbox 
+"let g:gruvbox_contrast_dark = 'hard'
 
 " Press Space to turn off highlighting and clear any message already displayed.
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
@@ -104,3 +99,17 @@ hi Normal guibg=NONE ctermbg=NONE
 "ctrlp
 let g:ctrlp_map = '<c-p>'
 
+let mapleader = '-'
+
+"sourcing and editing vimrc
+augroup vimrcgroup
+        "open vimrc split vertically
+        nnoremap <Leader>ev :vsplit $MYVIMRC<cr><c-w>L
+        "source vimrc
+        nnoremap <Leader>sv :source $MYVIMRC<cr>
+augroup END
+
+" signature for java assignments
+augroup java_assignments
+        autocmd FileType java :iabbrev <Leader>sig /*<cr>Name: Sean Maher<cr>Student ID: 300058566<cr>Class:<cr>Work:<cr>/
+augroup END
