@@ -25,7 +25,7 @@ let g:deus_termcolors=256
 set autochdir 
 set tags+=./tags;
 
-filetype off                  " required
+filetype on
 
 
 " set the runtime path to include Vundle and initialize
