@@ -39,6 +39,12 @@
 
 (add-to-list 'load-path "/home/sean/.emacs.d/se/")
 
+
+(setq c-eldoc-includes "`pkg-config xcb -cflags` -I./ -I../ ")
+(setq c-eldoc-c-command "gcc")
+(load "c-eldoc")
+(add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
+
 (setq-default indent-tabs-mode nil)
 (setq indent-tabs-mode nil)
 (setq-default tab-width 8)
@@ -80,7 +86,9 @@
 
 ; set proper font
 (add-to-list 'default-frame-alist
-	     '(font . "Agave-13"))
+	     '(font . "Agave-10"))
+
+(setf cursor-type '(box . 10))
 
 (global-visual-line-mode 1) ; wrap lines rounded to words to make reading easier
 (global-hl-line-mode 1) ; highlight current row
@@ -127,7 +135,7 @@
 
 (add-hook 'org-mode-hook 'auto-fill-mode)
 
-(setq geiser-active-implementations '(racket mit))
+(setq geiser-active-implementations '(mit))
 
 ;;; END LISP
 
@@ -156,6 +164,29 @@
 
 ;;; GO COMPILATION MODE
 (require 'se-go)
+
+;;; GO
+(defun set-exec-path-from-shell-PATH ()
+  (let ((path-from-shell (replace-regexp-in-string
+                          "[ \t\n]*$"
+                          ""
+                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq eshell-path-env path-from-shell) ; for eshell users
+    (setq exec-path (split-string path-from-shell path-separator))))
+
+(when window-system (set-exec-path-from-shell-PATH))
+
+(setenv "GOPATH" "/home/sean/Documents/code/go/")
+
+(add-hook 'before-save-hook 'gofmt-before-save)
+
+;;; Prolog
+(add-hook 'prolog-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c C-i") 'ediprolog-dwim)
+            (local-set-key (kbd "C-c C-o") 'ediprolog-remove-interactions)))
+
 
 (provide '.emacs)
 ;;; .emacs ends here
