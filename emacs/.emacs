@@ -1,3 +1,9 @@
+;;; .emacs -- not a package
+;;; Commentary:
+;; EXWM xinit file
+
+;;; Code:
+
 ;;---------------------------------------------
 ;;MELPA
 ;;---------------------------------------------
@@ -22,10 +28,9 @@
  '(custom-safe-themes
    (quote
     ("ef07cb337554ffebfccff8052827c4a9d55dc2d0bc7f08804470451385d41c5c" "4ce13ab8b7a8b44ed912a74312b252b0a3ad79b0da6b1034c0145b1fcfd206cb" "fa477d10f10aa808a2d8165a4f7e6cee1ab7f902b6853fbee911a9e27cf346bc" "030346c2470ddfdaca479610c56a9c2aa3e93d5de3a9696f335fd46417d8d3e4" "1436d643b98844555d56c59c74004eb158dc85fc55d2e7205f8d9b8c860e177f" "e0d42a58c84161a0744ceab595370cbe290949968ab62273aed6212df0ea94b4" "58c6711a3b568437bab07a30385d34aacf64156cc5137ea20e799984f4227265" "c48551a5fb7b9fc019bf3f61ebf14cf7c9cdca79bcb2a4219195371c02268f11" "72a81c54c97b9e5efcc3ea214382615649ebb539cb4f2fe3a46cd12af72c7607" "9b59e147dbbde5e638ea1cde5ec0a358d5f269d27bd2b893a0947c4a867e14c1" default)))
- '(jdee-server-dir "~/.emacs.d/jdee/")
  '(package-selected-packages
    (quote
-    (challenger-deep-theme gorepl-mode go-scratch go-playground go-mode geiser evil-surround auctex htmlize gruvbox-theme evil-paredit paredit rust-mode evil-visual-mark-mode kaolin-themes ein smartrep python-mode request websocket markdown-mode which-key darktooth-theme ample-theme noctilux-theme rainbow-delimiters sublime-themes flatland-theme slime))))
+    (evil-collection ediprolog exwm challenger-deep-theme gorepl-mode go-scratch go-playground go-mode geiser evil-surround auctex htmlize gruvbox-theme evil-paredit paredit rust-mode evil-visual-mark-mode kaolin-themes ein smartrep python-mode request websocket markdown-mode which-key darktooth-theme ample-theme noctilux-theme rainbow-delimiters sublime-themes flatland-theme slime))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -37,12 +42,16 @@
 ;; END MELPA
 ;;----------------------------------------------
 
+(byte-recompile-directory (expand-file-name "~/.emacs.d/") 0)
+
+(add-to-list 'load-path "/home/sean/.emacs.d/s.el/")
+(require 's)
 (add-to-list 'load-path "/home/sean/.emacs.d/se/")
+(require 'se-misc)
 
-
-(setq c-eldoc-includes "`pkg-config xcb -cflags` -I./ -I../ ")
-(setq c-eldoc-c-command "gcc")
-(load "c-eldoc")
+;; (setq c-eldoc-includes "`pkg-config xcb -cflags` -I./ -I../ ")
+;; (setq c-eldoc-c-command "gcc")
+;; (load "c-eldoc")
 (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
 
 (setq-default indent-tabs-mode nil)
@@ -70,6 +79,8 @@
 (show-paren-mode 1)
 
 ;; IF YOU WANT EVIL MODE ON STARTUP
+(setf evil-want-keybinding nil)
+(evil-collection-init)
 (evil-mode)
 (global-flycheck-mode)
 
@@ -83,10 +94,15 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
+(fringe-mode 1)
+
+(setq display-time-default-load-average nil)
+(display-time-mode t)
 
 ; set proper font
 (add-to-list 'default-frame-alist
-	     '(font . "Agave-10"))
+	     '(font . "Agave-11")
+             '(fullscreen . fullboth))
 
 (setf cursor-type '(box . 10))
 
@@ -107,19 +123,15 @@
 (setq column-number-mode t)
 
 ; make sure ein works
-(require 'ein)
-(require 'ein-notebook)
-(require 'ein-subpackages)
+;; (require 'ein)
+;; (require 'ein-notebook)
+;; (require 'ein-subpackages)
 
 ; Slime
 (slime-setup '(slime-fancy slime-quicklisp slime-asdf))
 (setq inferior-lisp-program "/bin/sbcl")
 
 ;;; LISP
-;; evil paredit -- stops you from deleting parens
-(add-hook 'emacs-lisp-mode-hook 'evil-paredit-mode)
-(add-hook 'lisp-mode-hook       'evil-paredit-mode)
-(add-hook 'scheme-mode-hook     'evil-paredit-mode)
 
 ; paredit
 (eldoc-add-command
@@ -133,7 +145,16 @@
 (add-hook 'lisp-interaction-mode-hook            #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook                      #'enable-paredit-mode)
 
+(add-hook 'lisp-interaction-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c C-o") 'eval-print-last-sexp)))
+
 (add-hook 'org-mode-hook 'auto-fill-mode)
+
+;; evil paredit -- stops you from deleting parens
+(add-hook 'emacs-lisp-mode-hook 'evil-paredit-mode)
+(add-hook 'lisp-mode-hook       'evil-paredit-mode)
+(add-hook 'scheme-mode-hook     'evil-paredit-mode)
 
 (setq geiser-active-implementations '(mit))
 
@@ -163,7 +184,8 @@
       (insert-file-contents filename))))
 
 ;;; GO COMPILATION MODE
-(require 'se-go)
+;; (require 'se-go)
+
 
 ;;; GO
 (defun set-exec-path-from-shell-PATH ()
@@ -182,11 +204,34 @@
 (add-hook 'before-save-hook 'gofmt-before-save)
 
 ;;; Prolog
+(require 'ediprolog)
 (add-hook 'prolog-mode-hook
           (lambda ()
             (local-set-key (kbd "C-c C-i") 'ediprolog-dwim)
             (local-set-key (kbd "C-c C-o") 'ediprolog-remove-interactions)))
 
+
+;;; EXWM
+;; (require 'exwm)
+;; (require 'exwm-config)
+;; (require 'exwm-systemtray)
+;; (exwm-config-default)
+;; (exwm-systemtray-enable)
+;; (require 'exwm-randr)
+;; (exwm-randr-enable)
+;; (exwm-workspace-switch-create 1)
+;; (global-set-key (kbd "s-.") '(lambda () (interactive) (start-process-shell-command "xfce4-terminal" nil "xfce4-terminal")))
+
+;; (shell-command "setxkbmap -option \"caps:swapescape\"")
+;; (shell-command "synclient PalmDetect=1")
+;; (shell-command "synclient PalmMinWidth=2")
+;; (se-backlight 20)
+;; TODO: Get this working
+; (shell-command "syndaemon -i 0.5 -t -K -R -d")
+;; (async-shell-command "compton")
+;; (delete-other-windows)
+
+;; (display-battery-mode)
 
 (provide '.emacs)
 ;;; .emacs ends here
