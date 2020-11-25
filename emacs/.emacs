@@ -30,8 +30,6 @@
 
 (add-to-list 'load-path "/home/sean/.emacs.d/elisp")
 
-(require 'escreen)
-(escreen-install)
 (setf evil-want-keybinding nil)
 (use-package evil :ensure t)
 (use-package evil-collection :ensure t)
@@ -69,8 +67,10 @@
 
 (setq tramp-default-method "sshx")
 
-;;; GO COMPILATION MODE
-;; (require 'se-go)
+(require 'escreen)
+(escreen-install)
+(add-hook 'escreen-goto-screen-hook
+          'escreen-enable-number-mode-if-more-than-one-screen)
 
 (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
 (setq evil-want-keybinding nil)
