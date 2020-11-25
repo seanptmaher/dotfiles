@@ -33,6 +33,8 @@
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 
 (require 'escreen)
+(escreen-install)
+
 (setf evil-want-keybinding nil)
 (use-package evil :ensure t)
 (use-package evil-collection :ensure t)
@@ -139,6 +141,14 @@
 ; line numbers
 (global-display-line-numbers-mode)
 (setq column-number-mode t)
+
+(defun sudo-shell-command (command)
+  (interactive "MShell command (root): ")
+  (with-temp-buffer
+    (cd "/sudo::/")
+    (async-shell-command command)))
+
+(global-set-key (kbd "M-@") 'sudo-shell-command)
 
 ; make sure ein works
 ;; (require 'ein)
