@@ -29,6 +29,7 @@
 ;;----------------------------------------------
 
 (require 'escreen)
+(escreen-install)
 (setf evil-want-keybinding nil)
 (use-package evil :ensure t)
 (use-package evil-collection :ensure t)
