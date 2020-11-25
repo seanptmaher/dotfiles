@@ -1,6 +1,6 @@
-;;; .emacs -- not a package
+;;; package -- summary
 ;;; Commentary:
-;; EXWM xinit file
+;; Sean's Emacs init file
 
 ;;; Code:
 ;;---------------------------------------------
@@ -28,18 +28,12 @@
 ;; END MELPA
 ;;----------------------------------------------
 
-;; (byte-recompile-directory (expand-file-name "~/.emacs.d/") 0)
-
-(add-to-list 'load-path "~/.emacs.d/elisp/")
-
 (require 'escreen)
-(escreen-install)
-
 (setf evil-want-keybinding nil)
 (use-package evil :ensure t)
 (use-package evil-collection :ensure t)
 (use-package evil-visual-mark-mode :ensure t)
-(use-package evil-surround :ensure t)
+(use-package evil-surround :ensure t :config (global-evil-surround-mode 1))
 (use-package which-key :ensure t)
 
 (use-package paredit :ensure t)
@@ -70,69 +64,72 @@
 (use-package kaolin-themes :ensure t)
 ;; (use-package smartrep)
 
-(add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
+(setq tramp-default-method "sshx")
 
-(setq visual-bell-mode nil)
+;;; GO COMPILATION MODE
+;; (require 'se-go)
+
+(setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+(setq evil-want-keybinding nil)
+(evil-collection-init)
+(evil-mode)
+(global-flycheck-mode)
 
 (setq-default indent-tabs-mode nil)
 (setq indent-tabs-mode nil)
 (setq-default tab-width 8)
 (setq c-set-style "linux")
 (setq c-basic-offset 8)
+(c-set-offset 'substatement-open 0)
+(c-add-style "radare2"
+             '((c-basic-offset . 4)
+               (tab-width . 8)
+               (indent-tabs-mode . t)
+               ;;;; You would need (put 'c-auto-align-backslashes 'safe-local-variable 'booleanp) to enable this
+               ;; (c-auto-align-backslashes . nil)
+               (c-offsets-alist
+                (substatement-open . 0)
+                (arglist-intro . ++)
+                (arglist-cont . ++)
+                (arglist-cont-nonempty . ++)
+                (statement-cont . ++)
+                )))
 
-
-; get rid of that org mode html validator thing 
-(setq org-html-validation-link nil)
+(add-hook 'c-mode-hook
+          (lambda ()
+            (setf gdb-many-windows t)
+            (local-set-key (kbd "C-c C-i") 'compile)
+            (local-set-key (kbd "C-c C-r") 'gdb)))
 
 ; remove splash screen
 (setq inhibit-splash-screen t)
 ; ignore capitalization in eshell autocomplete
 (setq pcomplete-ignore-case t)
 
-; eldoc shows arguments to functions at the bottom
-(require 'eldoc) ; if not already loaded
-
 ; this should save the backup files in ~/.emacs_saves to reduce clutter
 (setq backup-directory-alist '(("." . "~/.emacs_saves")))
 
 (setq show-paren-delay 0)
 (show-paren-mode 1)
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
-;; IF YOU WANT EVIL MODE ON STARTUP
-(setf evil-want-keybinding nil)
-(evil-collection-init)
-(evil-mode)
-(global-flycheck-mode)
-
-(use-package evil-surround
-  :ensure t
-  :config
-  (global-evil-surround-mode 1))
+(editorconfig-mode 1)
 
 ; set theme, remove scroll bar and title bar
 (load-theme 'doom-horizon t)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(fringe-mode 1)
-
-(setq display-time-default-load-average nil)
-(display-time-mode t)
 
 ; set proper font
 (add-to-list 'default-frame-alist
-	     '(font . "agave-11")
-             '(fullscreen . fullboth))
-
-(setf cursor-type '(box . 12))
+	     '(font . "Agave-13"))
 
 (global-visual-line-mode 1) ; wrap lines rounded to words to make reading easier
 (global-hl-line-mode 1) ; highlight current row
 
 
 ; Matching parens and rainbow delimiters
-(show-paren-mode 1)
-(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 ; global which-key-mode (displays all available key-combos at any
 ; given point in a command in a window at the bottom of emacs)
@@ -142,6 +139,15 @@
 (global-display-line-numbers-mode)
 (setq column-number-mode t)
 
+;; reading epubs
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+(setq nov-text-width 80)
+
+; get rid of that org mode html validator thing 
+(setq org-html-validation-link nil)
+
+
+;;; Misc bindings
 (defun sudo-shell-command (command)
   (interactive "MShell command (root): ")
   (with-temp-buffer
@@ -149,18 +155,21 @@
     (async-shell-command command)))
 
 (global-set-key (kbd "M-@") 'sudo-shell-command)
+(global-set-key (kbd "M-#") 'async-shell-command)
 
-; make sure ein works
-;; (require 'ein)
-;; (require 'ein-notebook)
-;; (require 'ein-subpackages)
+;;; LISP
+;; evil paredit -- stops you from deleting parens
+;; (add-hook 'paredit-enabled-hook 'evil-smartparens-mode)
+;; (add-hook 'emacs-lisp-mode-hook 'evil-smartparens-mode)
+;; (add-hook 'lisp-mode-hook       'evil-smartparens-mode)
+;; (add-hook 'scheme-mode-hook     'evil-smartparens-mode)
+(add-hook 'emacs-lisp-mode-hook 'evil-paredit-mode)
+(add-hook 'lisp-mode-hook       'evil-paredit-mode)
+(add-hook 'scheme-mode-hook     'evil-paredit-mode)
 
 ; Slime
 (slime-setup '(slime-fancy slime-quicklisp slime-asdf))
 (setq inferior-lisp-program "/bin/sbcl")
-
-;;; LISP
-
 ; paredit
 (eldoc-add-command
  'paredit-backward-delete
@@ -173,21 +182,51 @@
 (add-hook 'lisp-interaction-mode-hook            #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook                      #'enable-paredit-mode)
 
-(add-hook 'lisp-interaction-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-c C-o") 'eval-print-last-sexp)))
-
 (add-hook 'org-mode-hook 'auto-fill-mode)
-
-;; evil paredit -- stops you from deleting parens
-(add-hook 'emacs-lisp-mode-hook 'evil-paredit-mode)
-(add-hook 'lisp-mode-hook       'evil-paredit-mode)
-(add-hook 'scheme-mode-hook     'evil-paredit-mode)
 
 (setq geiser-active-implementations '(mit))
 
 ;;; END LISP
 
+;;; PROLOG
+(add-hook 'prolog-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c C-i") 'ediprolog-dwim)
+            (local-set-key (kbd "C-c C-o") 'ediprolog-remove-interactions)))
+
+;;; END PROLOG
+
+;;; HOON
+(require 'hoon-mode)
+(setf hoon-herb-path "/home/sean/documents/code/hoon/urbit/pkg/herb/herb")
+(eval-after-load 'hoon-mode
+  '(progn
+     (define-key hoon-mode-map (kbd "C-c C-r") 'hoon-eval-region-in-herb)
+     (define-key hoon-mode-map (kbd "C-c C-l") 'hoon-eval-buffer-in-herb)))
+
+;;; END HOON
+
+;;; HASKELL
+(require 'hindent)
+(add-hook 'haskell-mode-hook #'hindent-mode)
+
+(let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
+  (setenv "PATH" (concat my-cabal-path path-separator (getenv "PATH")))
+  (add-to-list 'exec-path my-cabal-path))
+
+(eval-after-load 'haskell-mode '(progn
+  (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
+  (define-key haskell-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
+  (define-key haskell-mode-map (kbd "C-c C-n C-t") 'haskell-process-do-type)
+  (define-key haskell-mode-map (kbd "C-c C-n C-i") 'haskell-process-do-info)
+  (define-key haskell-mode-map (kbd "C-c C-n C-c") 'haskell-process-cabal-build)
+  (define-key haskell-mode-map (kbd "C-c C-n c") 'haskell-process-cabal)))
+(eval-after-load 'haskell-cabal '(progn
+  (define-key haskell-cabal-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
+  (define-key haskell-cabal-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
+  (define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
+  (define-key haskell-cabal-mode-map (kbd "C-c c") 'haskell-process-cabal)))
+;;; END HASKELL
 
 ;;; TEX
 (setq TeX-parse-self t) ; parse on load
@@ -197,6 +236,7 @@
 
 (add-hook 'TeX-mode-hook (lambda () (TeX-fold-mode 1))); Automatically activate TeX-fold-mode.
 (add-hook 'TeX-mode-hook #'auto-fill-mode)
+(add-hook 'TeX-mode-hook #'prettify-symbols-mode)
 
 (setq LaTeX-babel-hyphen nil); Disable language-specific hyphen insertion.
 
@@ -211,33 +251,12 @@
       (erase-buffer)
       (insert-file-contents filename))))
 
-;;; GO COMPILATION MODE
-;; (require 'se-go)
+;; OCAML
+;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
+(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
+;; ## end of OPAM user-setup addition for emacs / base ## keep this line
 
-
-;;; GO
-(defun set-exec-path-from-shell-PATH ()
-  (let ((path-from-shell (replace-regexp-in-string
-                          "[ \t\n]*$"
-                          ""
-                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-    (setenv "PATH" path-from-shell)
-    (setq eshell-path-env path-from-shell) ; for eshell users
-    (setq exec-path (split-string path-from-shell path-separator))))
-
-(when window-system (set-exec-path-from-shell-PATH))
-
-(setenv "GOPATH" "/home/sean/Documents/code/go/")
-
-(add-hook 'before-save-hook 'gofmt-before-save)
-
-;;; Prolog
-(require 'ediprolog)
-(add-hook 'prolog-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-c C-i") 'ediprolog-dwim)
-            (local-set-key (kbd "C-c C-o") 'ediprolog-remove-interactions)))
-
+(add-hook 'ocaml-mode-hook #'tuareg-mode)
 
 (provide '.emacs)
 ;;; .emacs ends here
