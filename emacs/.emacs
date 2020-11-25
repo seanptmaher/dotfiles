@@ -28,6 +28,8 @@
 ;; END MELPA
 ;;----------------------------------------------
 
+(add-to-list 'load-path "/home/sean/.emacs.d/elisp")
+
 (require 'escreen)
 (escreen-install)
 (setf evil-want-keybinding nil)
