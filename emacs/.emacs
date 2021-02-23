@@ -14,21 +14,28 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(auth-source-save-behavior nil)
  '(custom-safe-themes
    '("f7b0f2d0f37846ef75157f5c8c159e6d610c3efcc507cbddec789c02e165c121" "56911bd75304fdb19619c9cb4c7b0511214d93f18e566e5b954416756a20cc80" "3577ee091e1d318c49889574a31175970472f6f182a9789f1a3e9e4513641d86" "845103fcb9b091b0958171653a4413ccfad35552bc39697d448941bcbe5a660d" "e1ecb0536abec692b5a5e845067d75273fe36f24d01210bf0aa5842f2a7e029f" "054e929c1df4293dd68f99effc595f5f7eb64ff3c064c4cfaad186cd450796db" "a7928e99b48819aac3203355cbffac9b825df50d2b3347ceeec1e7f6b592c647" "ed573618e4c25fa441f12cbbb786fb56d918f216ae4a895ca1c74f34a19cfe67" "0eb3c0868ff890b0c4ee138069ce2a8936a8a69ba150efa6bfb9fb7c05af5ec3" "3788e589eb432e6a515d557cbeb8dc4eaca9e00ae54f932b4bd43ed78605532e" "ef07cb337554ffebfccff8052827c4a9d55dc2d0bc7f08804470451385d41c5c" "4ce13ab8b7a8b44ed912a74312b252b0a3ad79b0da6b1034c0145b1fcfd206cb" "fa477d10f10aa808a2d8165a4f7e6cee1ab7f902b6853fbee911a9e27cf346bc" "030346c2470ddfdaca479610c56a9c2aa3e93d5de3a9696f335fd46417d8d3e4" "1436d643b98844555d56c59c74004eb158dc85fc55d2e7205f8d9b8c860e177f" "e0d42a58c84161a0744ceab595370cbe290949968ab62273aed6212df0ea94b4" "58c6711a3b568437bab07a30385d34aacf64156cc5137ea20e799984f4227265" "c48551a5fb7b9fc019bf3f61ebf14cf7c9cdca79bcb2a4219195371c02268f11" "72a81c54c97b9e5efcc3ea214382615649ebb539cb4f2fe3a46cd12af72c7607" "9b59e147dbbde5e638ea1cde5ec0a358d5f269d27bd2b893a0947c4a867e14c1" default))
  '(package-selected-packages
-   '(magit doom-themes evil-collection ediprolog exwm challenger-deep-theme gorepl-mode go-scratch go-playground go-mode geiser evil-surround htmlize gruvbox-theme evil-paredit paredit rust-mode evil-visual-mark-mode kaolin-themes ein smartrep python-mode request websocket markdown-mode which-key darktooth-theme ample-theme noctilux-theme rainbow-delimiters sublime-themes flatland-theme slime)))
+   '(visual-regexp-steroids yard-mode enh-ruby-mode rinari robe ruby-end mu4e ox-latex-subfigure ess erlang slime vterm company magit doom-themes evil-collection ediprolog exwm challenger-deep-theme gorepl-mode go-scratch go-playground go-mode geiser evil-surround htmlize gruvbox-theme evil-paredit paredit rust-mode evil-visual-mark-mode kaolin-themes ein smartrep python-mode request websocket markdown-mode which-key darktooth-theme ample-theme noctilux-theme rainbow-delimiters sublime-themes flatland-theme))
+ '(safe-local-variable-values
+   '((eval c-set-offset 'inexpr-class 0)
+     (c-basic-offset 4)
+     (tab-width 4))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:background nil)))))
 ;;----------------------------------------------
 ;; END MELPA
 ;;----------------------------------------------
 
 (add-to-list 'load-path "/home/sean/.emacs.d/elisp")
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
+(require 'mu4e)
 
 (setf evil-want-keybinding nil)
 (use-package evil :ensure t)
@@ -36,46 +43,56 @@
 (use-package evil-visual-mark-mode :ensure t)
 (use-package evil-surround :ensure t :config (global-evil-surround-mode 1))
 (use-package which-key :ensure t)
-
 (use-package paredit :ensure t)
 (use-package evil-paredit :ensure t)
 (use-package rainbow-delimiters :ensure t)
-
 (use-package geiser :ensure t)
 (use-package slime :ensure t)
-
-(use-package magit :ensure t)
-
+(use-package magit :ensure t :config
+  (setf magit-bury-buffer-function #'magit-mode-quit-window))
+;; (use-package visual-regexp-steroids :ensure t :config
+;;   (setq isearch-search-fun-function 'vr--isearch-search-fun-function)
+;;   ;; (define-key global-map (kbd "C-c r") 'vr/replace)
+;;   ;; (define-key global-map (kbd "C-c q") 'vr/query-replace)
+;;   ;; ;; if you use multiple-cursors, this is for you:
+;;   ;; (define-key global-map (kbd "C-c m") 'vr/mc-mark)
+;;   ;; ;; to use visual-regexp-steroids's isearch instead of the built-in regexp isearch, also include the following lines:
+;;   ;; (define-key global-map (kbd "C-r") 'vr/isearch-backward) ;; C-M-r
+;;   ;; (define-key global-map (kbd "C-s") 'vr/isearch-forward) ;; C-M-s
+;;   )
 ;; (use-package auctex :ensure t)
 (use-package htmlize :ensure t)
-
 ;; (use-package go-scratch :ensure t)
 ;; (use-package go-playground :ensure t)
 ;; (use-package gorepl-mode :ensure t)
 ;; (use-package go-mode :ensure t)
-
 (use-package rust-mode :ensure t)
 (use-package markdown-mode :ensure t)
-
+(use-package vterm :ensure t)
 (use-package ediprolog :ensure t)
-
 (use-package request :ensure t)
 (use-package websocket :ensure t)
-
 (use-package kaolin-themes :ensure t)
+
 ;; (use-package smartrep)
+(use-package company :ensure t
+  :config
+  (add-hook 'after-init-hook 'global-company-mode)
+  (global-set-key (kbd "M-TAB") 'company-complete)
+  )
 
 (setq tramp-default-method "sshx")
 
-(require 'escreen)
-(escreen-install)
-(add-hook 'escreen-goto-screen-hook
-          'escreen-enable-number-mode-if-more-than-one-screen)
+;; (require 'escreen)
+;; (escreen-install)
+;; (add-hook 'escreen-goto-screen-hook
+;;           'escreen-enable-number-mode-if-more-than-one-screen)
 
 (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
 (setq evil-want-keybinding nil)
 (evil-collection-init)
 (evil-mode)
+(add-to-list 'evil-emacs-state-modes 'vterm-mode)
 (global-flycheck-mode)
 
 (setq-default indent-tabs-mode nil)
@@ -110,7 +127,7 @@
 (setq pcomplete-ignore-case t)
 
 ; this should save the backup files in ~/.emacs_saves to reduce clutter
-(setq backup-directory-alist '(("." . "~/.emacs_saves")))
+(setq backup-directory-alist '(("" . "~/.emacs.d/backup")))
 
 (setq show-paren-delay 0)
 (show-paren-mode 1)
@@ -131,6 +148,16 @@
 (global-visual-line-mode 1) ; wrap lines rounded to words to make reading easier
 (global-hl-line-mode 1) ; highlight current row
 
+;; This is for the french keyboard (and other dead keys)
+(require 'iso-transl)
+
+;; This should paste this file into scratch
+(let ((filename "/home/sean/.emacs.d/startup.txt"))
+  (when (and (file-exists-p filename)
+             (get-buffer "*scratch*"))
+    (with-current-buffer "*scratch*"
+      (erase-buffer)
+      (insert-file-contents filename))))
 
 ; Matching parens and rainbow delimiters
 
@@ -156,9 +183,45 @@
   (with-temp-buffer
     (cd "/sudo::/")
     (async-shell-command command)))
-
 (global-set-key (kbd "M-@") 'sudo-shell-command)
 (global-set-key (kbd "M-#") 'async-shell-command)
+(global-set-key (kbd "M-$") 'vterm)
+(defun htop ()
+  (interactive)
+  (if (get-buffer "*htop*")
+      (switch-to-buffer "*htop*")
+    (ansi-term "/bin/bash" "htop")   
+    (comint-send-string "*htop*" "htop\n")))
+;;; End misc bindings
+
+;;; MU4E
+(setq mu4e-maildir "~/Maildir")
+(setq mu4e-drafts-folder "/[Gmail].Drafts")
+(setq mu4e-sent-folder   "/[Gmail].Sent Mail")
+(setq mu4e-trash-folder  "/[Gmail].Trash")
+(setq mu4e-sent-messages-behavior 'delete)
+(setq mu4e-maildir-shortcuts
+      '( ("/INBOX"               . ?i)
+         ("/[Gmail].Sent Mail"   . ?s)
+         ("/[Gmail].Trash"       . ?t)
+         ("/[Gmail].All Mail"    . ?a)))
+(setq mu4e-get-mail-command "offlineimap")
+(setq
+ user-mail-address "seanptmaher@gmail.com"
+ user-full-name  "Sean Maher"
+ message-signature
+ (concat
+  "-SM\n"))
+(require 'smtpmail)
+(setq message-send-mail-function 'smtpmail-send-it
+    smtpmail-stream-type 'starttls
+    smtpmail-default-smtp-server "smtp.gmail.com"
+    smtpmail-smtp-server "smtp.gmail.com"
+    smtpmail-smtp-service 587)
+(setq message-kill-buffer-on-exit t)
+;;; END MU4E
+
+
 
 ;;; LISP
 ;; evil paredit -- stops you from deleting parens
@@ -169,10 +232,9 @@
 (add-hook 'emacs-lisp-mode-hook 'evil-paredit-mode)
 (add-hook 'lisp-mode-hook       'evil-paredit-mode)
 (add-hook 'scheme-mode-hook     'evil-paredit-mode)
-
 ; Slime
 (slime-setup '(slime-fancy slime-quicklisp slime-asdf))
-(setq inferior-lisp-program "/bin/sbcl")
+(setq inferior-lisp-program "/usr/local/bin/sbcl")
 ; paredit
 (eldoc-add-command
  'paredit-backward-delete
@@ -184,11 +246,8 @@
 (add-hook 'lisp-mode-hook                        #'enable-paredit-mode)
 (add-hook 'lisp-interaction-mode-hook            #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook                      #'enable-paredit-mode)
-
 (add-hook 'org-mode-hook 'auto-fill-mode)
-
 (setq geiser-active-implementations '(mit))
-
 ;;; END LISP
 
 ;;; PROLOG
@@ -196,27 +255,23 @@
           (lambda ()
             (local-set-key (kbd "C-c C-i") 'ediprolog-dwim)
             (local-set-key (kbd "C-c C-o") 'ediprolog-remove-interactions)))
-
 ;;; END PROLOG
 
 ;;; HOON
-(require 'hoon-mode)
-(setf hoon-herb-path "/home/sean/documents/code/hoon/urbit/pkg/herb/herb")
-(eval-after-load 'hoon-mode
-  '(progn
-     (define-key hoon-mode-map (kbd "C-c C-r") 'hoon-eval-region-in-herb)
-     (define-key hoon-mode-map (kbd "C-c C-l") 'hoon-eval-buffer-in-herb)))
-
+;; (require 'hoon-mode)
+;; (setf hoon-herb-path "/home/sean/documents/code/hoon/urbit/pkg/herb/herb")
+;; (eval-after-load 'hoon-mode
+;;   '(progn
+;;      (define-key hoon-mode-map (kbd "C-c C-r") 'hoon-eval-region-in-herb)
+;;      (define-key hoon-mode-map (kbd "C-c C-l") 'hoon-eval-buffer-in-herb)))
 ;;; END HOON
 
 ;;; HASKELL
 (require 'hindent)
 (add-hook 'haskell-mode-hook #'hindent-mode)
-
 (let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
   (setenv "PATH" (concat my-cabal-path path-separator (getenv "PATH")))
   (add-to-list 'exec-path my-cabal-path))
-
 (eval-after-load 'haskell-mode '(progn
   (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
   (define-key haskell-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
@@ -234,32 +289,48 @@
 ;;; TEX
 (setq TeX-parse-self t) ; parse on load
 (setq TeX-auto-save t) ; parse on save
-
 (setq TeX-PDF-mode t) ; as opposed to DVI mode
-
 (add-hook 'TeX-mode-hook (lambda () (TeX-fold-mode 1))); Automatically activate TeX-fold-mode.
 (add-hook 'TeX-mode-hook #'auto-fill-mode)
-(add-hook 'TeX-mode-hook #'prettify-symbols-mode)
-
+(add-hook 'TeX-mode-hook 'prettify-symbols-mode)
 (setq LaTeX-babel-hyphen nil); Disable language-specific hyphen insertion.
-
 (setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "/opt/texlive/2019/bin/x86_64-linux")))
 (setq exec-path (append exec-path (list (expand-file-name "/opt/texlive/2019/bin/x86_64-linux"))))
+;;; END TEX
 
-;; This should paste this file into scratch
-(let ((filename "~/.emacs.d/startup.txt"))
-  (when (and (file-exists-p filename)
-             (get-buffer "*scratch*"))
-    (with-current-buffer "*scratch*"
-      (erase-buffer)
-      (insert-file-contents filename))))
-
-;; OCAML
+;;; OCAML
 ;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
 (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
 ;; ## end of OPAM user-setup addition for emacs / base ## keep this line
-
 (add-hook 'ocaml-mode-hook #'tuareg-mode)
+;;; END OCAML
+
+;;; R
+(require 'ox-latex)
+(add-to-list 'org-latex-packages-alist '("" "minted"))
+(setq org-highlight-latex-and-related '(latex script entities))
+(setq org-latex-listings 'minted) 
+(setq org-latex-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+(setq org-src-fontify-natively t)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((R . t)
+   (latex . t)))
+;;; END R
+
+;;; RUBY
+(add-to-list 'auto-mode-alist
+             '("\\(?:\\.rb\\|ru\\|rake\\|thor\\|jbuilder\\|gemspec\\|podspec\\|/\\(?:Gem\\|Rake\\|Cap\\|Thor\\|Vagrant\\|Guard\\|Pod\\)file\\)\\'"
+             . enh-ruby-mode))
+(add-hook 'enh-ruby-mode-hook 'ruby-end-mode)
+(add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
+(add-hook 'enh-ruby-mode-hook 'robe-mode)
+(add-hook 'enh-ruby-mode-hook 'yard-mode)
+;;; END RUBY
+
 
 (provide '.emacs)
 ;;; .emacs ends here
