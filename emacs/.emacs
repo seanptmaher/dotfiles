@@ -20,7 +20,8 @@
  '(package-selected-packages
    '(tex rustic lsp-ui lsp-mode nov auctex undo-tree hindent editorconfig flycheck evil use-package racket-mode company-jedi jedi elpy visual-regexp-steroids yard-mode enh-ruby-mode rinari robe ruby-end mu4e ox-latex-subfigure ess erlang slime vterm company magit doom-themes evil-collection ediprolog exwm challenger-deep-theme gorepl-mode go-scratch go-playground go-mode geiser evil-surround htmlize gruvbox-theme evil-paredit paredit rust-mode evil-visual-mark-mode kaolin-themes ein smartrep python-mode request websocket markdown-mode which-key darktooth-theme ample-theme noctilux-theme rainbow-delimiters sublime-themes flatland-theme))
  '(safe-local-variable-values
-   '((eval c-set-offset 'inexpr-class 0)
+   '((buffer-file-coding-system . dos)
+     (eval c-set-offset 'inexpr-class 0)
      (c-basic-offset 4)
      (tab-width 4))))
 (custom-set-faces
@@ -39,13 +40,6 @@
 (use-package evil :ensure t)
 (use-package evil-collection :ensure t)
 (use-package undo-tree :ensure t)
-(use-package auctex :ensure t)
-(use-package tex
-  :defer t
-  :ensure auctex
-  :config
-  (setq TeX-auto-save t))
-
 
 (evil-collection-init)
 (evil-mode)
@@ -55,6 +49,14 @@
 
 (use-package evil-visual-mark-mode :ensure t)
 (use-package evil-surround :ensure t :config (global-evil-surround-mode 1))
+
+(use-package auctex :ensure t)
+(use-package tex
+  :defer t
+  :ensure auctex
+  :config
+  (setq TeX-auto-save t))
+
 (use-package which-key :ensure t)
 (use-package paredit :ensure t)
 (use-package evil-paredit :ensure t)
