@@ -16,14 +16,46 @@
  ;; If there is more than one, they won't work right.
  '(auth-source-save-behavior nil)
  '(custom-safe-themes
-   '("f7b0f2d0f37846ef75157f5c8c159e6d610c3efcc507cbddec789c02e165c121" "56911bd75304fdb19619c9cb4c7b0511214d93f18e566e5b954416756a20cc80" "3577ee091e1d318c49889574a31175970472f6f182a9789f1a3e9e4513641d86" "845103fcb9b091b0958171653a4413ccfad35552bc39697d448941bcbe5a660d" "e1ecb0536abec692b5a5e845067d75273fe36f24d01210bf0aa5842f2a7e029f" "054e929c1df4293dd68f99effc595f5f7eb64ff3c064c4cfaad186cd450796db" "a7928e99b48819aac3203355cbffac9b825df50d2b3347ceeec1e7f6b592c647" "ed573618e4c25fa441f12cbbb786fb56d918f216ae4a895ca1c74f34a19cfe67" "0eb3c0868ff890b0c4ee138069ce2a8936a8a69ba150efa6bfb9fb7c05af5ec3" "3788e589eb432e6a515d557cbeb8dc4eaca9e00ae54f932b4bd43ed78605532e" "ef07cb337554ffebfccff8052827c4a9d55dc2d0bc7f08804470451385d41c5c" "4ce13ab8b7a8b44ed912a74312b252b0a3ad79b0da6b1034c0145b1fcfd206cb" "fa477d10f10aa808a2d8165a4f7e6cee1ab7f902b6853fbee911a9e27cf346bc" "030346c2470ddfdaca479610c56a9c2aa3e93d5de3a9696f335fd46417d8d3e4" "1436d643b98844555d56c59c74004eb158dc85fc55d2e7205f8d9b8c860e177f" "e0d42a58c84161a0744ceab595370cbe290949968ab62273aed6212df0ea94b4" "58c6711a3b568437bab07a30385d34aacf64156cc5137ea20e799984f4227265" "c48551a5fb7b9fc019bf3f61ebf14cf7c9cdca79bcb2a4219195371c02268f11" "72a81c54c97b9e5efcc3ea214382615649ebb539cb4f2fe3a46cd12af72c7607" "9b59e147dbbde5e638ea1cde5ec0a358d5f269d27bd2b893a0947c4a867e14c1" default))
+   '("23c806e34594a583ea5bbf5adf9a964afe4f28b4467d28777bcba0d35aa0872e" "2ce76d65a813fae8cfee5c207f46f2a256bac69dacbb096051a7a8651aa252b0" "f7b0f2d0f37846ef75157f5c8c159e6d610c3efcc507cbddec789c02e165c121" "56911bd75304fdb19619c9cb4c7b0511214d93f18e566e5b954416756a20cc80" "3577ee091e1d318c49889574a31175970472f6f182a9789f1a3e9e4513641d86" "845103fcb9b091b0958171653a4413ccfad35552bc39697d448941bcbe5a660d" "e1ecb0536abec692b5a5e845067d75273fe36f24d01210bf0aa5842f2a7e029f" "054e929c1df4293dd68f99effc595f5f7eb64ff3c064c4cfaad186cd450796db" "a7928e99b48819aac3203355cbffac9b825df50d2b3347ceeec1e7f6b592c647" "ed573618e4c25fa441f12cbbb786fb56d918f216ae4a895ca1c74f34a19cfe67" "0eb3c0868ff890b0c4ee138069ce2a8936a8a69ba150efa6bfb9fb7c05af5ec3" "3788e589eb432e6a515d557cbeb8dc4eaca9e00ae54f932b4bd43ed78605532e" "ef07cb337554ffebfccff8052827c4a9d55dc2d0bc7f08804470451385d41c5c" "4ce13ab8b7a8b44ed912a74312b252b0a3ad79b0da6b1034c0145b1fcfd206cb" "fa477d10f10aa808a2d8165a4f7e6cee1ab7f902b6853fbee911a9e27cf346bc" "030346c2470ddfdaca479610c56a9c2aa3e93d5de3a9696f335fd46417d8d3e4" "1436d643b98844555d56c59c74004eb158dc85fc55d2e7205f8d9b8c860e177f" "e0d42a58c84161a0744ceab595370cbe290949968ab62273aed6212df0ea94b4" "58c6711a3b568437bab07a30385d34aacf64156cc5137ea20e799984f4227265" "c48551a5fb7b9fc019bf3f61ebf14cf7c9cdca79bcb2a4219195371c02268f11" "72a81c54c97b9e5efcc3ea214382615649ebb539cb4f2fe3a46cd12af72c7607" "9b59e147dbbde5e638ea1cde5ec0a358d5f269d27bd2b893a0947c4a867e14c1" default))
+ '(exwm-floating-border-color "#16161c")
+ '(fci-rule-color "#f9cec3")
+ '(highlight-tail-colors ((("#203a3b") . 0) (("#283841") . 20)))
+ '(jdee-db-active-breakpoint-face-colors (cons "#16161c" "#e95678"))
+ '(jdee-db-requested-breakpoint-face-colors (cons "#16161c" "#09f7a0"))
+ '(jdee-db-spec-breakpoint-face-colors (cons "#16161c" "#6a6a6a"))
+ '(objed-cursor-color "#e95678")
  '(package-selected-packages
-   '(tex rustic lsp-ui lsp-mode nov auctex undo-tree hindent editorconfig flycheck evil use-package racket-mode company-jedi jedi elpy visual-regexp-steroids yard-mode enh-ruby-mode rinari robe ruby-end mu4e ox-latex-subfigure ess erlang slime vterm company magit doom-themes evil-collection ediprolog exwm challenger-deep-theme gorepl-mode go-scratch go-playground go-mode geiser evil-surround htmlize gruvbox-theme evil-paredit paredit rust-mode evil-visual-mark-mode kaolin-themes ein smartrep python-mode request websocket markdown-mode which-key darktooth-theme ample-theme noctilux-theme rainbow-delimiters sublime-themes flatland-theme))
+   '(haskell-mode magit js2-mode tex rustic lsp-ui lsp-mode nov auctex undo-tree hindent editorconfig flycheck evil use-package racket-mode company-jedi jedi elpy visual-regexp-steroids yard-mode enh-ruby-mode rinari robe ruby-end mu4e ox-latex-subfigure ess erlang slime vterm company doom-themes evil-collection ediprolog exwm challenger-deep-theme gorepl-mode go-scratch go-playground go-mode geiser evil-surround htmlize gruvbox-theme evil-paredit paredit rust-mode evil-visual-mark-mode kaolin-themes ein smartrep python-mode request websocket markdown-mode which-key darktooth-theme ample-theme noctilux-theme rainbow-delimiters sublime-themes flatland-theme))
+ '(pdf-view-midnight-colors (cons "#c7c9cb" "#232530"))
+ '(rustic-ansi-faces
+   ["#232530" "#e95678" "#09f7a0" "#fab795" "#21bfc2" "#6c6f93" "#59e3e3" "#c7c9cb"])
  '(safe-local-variable-values
    '((buffer-file-coding-system . dos)
      (eval c-set-offset 'inexpr-class 0)
      (c-basic-offset 4)
-     (tab-width 4))))
+     (tab-width 4)))
+ '(vc-annotate-background "#232530")
+ '(vc-annotate-color-map
+   (list
+    (cons 20 "#09f7a0")
+    (cons 40 "#59e19c")
+    (cons 60 "#a9cc98")
+    (cons 80 "#fab795")
+    (cons 100 "#f6ab8f")
+    (cons 120 "#f39f89")
+    (cons 140 "#f09383")
+    (cons 160 "#c48788")
+    (cons 180 "#987a8d")
+    (cons 200 "#6c6f93")
+    (cons 220 "#95668a")
+    (cons 240 "#bf5e81")
+    (cons 260 "#e95678")
+    (cons 280 "#c95b74")
+    (cons 300 "#a96071")
+    (cons 320 "#89656d")
+    (cons 340 "#f9cec3")
+    (cons 360 "#f9cec3")))
+ '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -50,7 +82,7 @@
 (use-package evil-visual-mark-mode :ensure t)
 (use-package evil-surround :ensure t :config (global-evil-surround-mode 1))
 
-(use-package auctex :ensure t)
+;; (use-package auctex :ensure t)
 (use-package tex
   :defer t
   :ensure auctex
@@ -71,25 +103,29 @@
 (use-package htmlize :ensure t)
 (use-package flycheck :ensure t)
 (use-package editorconfig :ensure t)
+
 (use-package lsp-mode
   :ensure
   :commands lsp
   :custom
-  ;; what to use when checking on-save. "check" is default, I prefer clippy
-  (lsp-rust-analyzer-cargo-watch-command "clippy")
-  (lsp-eldoc-render-all t)
-  (lsp-idle-delay 0.6)
-  (lsp-rust-analyzer-server-display-inlay-hints t)
+  ;; (lsp-rust-analyzer-cargo-watch-command "clippy")
+  ;; (lsp-eldoc-render-all t)
+
+  (setq lsp-enable-symbol-highlighting nil)
+
+  (setq gc-cons-threshold (* 100 1024 1024)
+        read-process-output-max (* 1024 1024)
+        treemacs-space-between-root-nodes nil
+        company-idle-delay 0.0
+        company-minimum-prefix-length 1
+        lsp-idle-delay 0.1)  ;; clangd is fast
+
+  (setq lsp-eldoc-hook nil)
+  (setq lsp-enable-symbol-highlighting nil)
+  (setq lsp-signature-auto-activate nil)
+  ;; (lsp-rust-analyzer-server-display-inlay-hints t)
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
-
-(use-package lsp-ui
-  :ensure
-  :commands lsp-ui-mode
-  :custom
-  (lsp-ui-peek-always-show t)
-  (lsp-ui-sideline-show-hover t)
-  (lsp-ui-doc-enable nil))
 
 (use-package rustic :ensure t
   :bind (:map rustic-mode-map
@@ -102,10 +138,10 @@
               ("C-c C-c Q" . lsp-workspace-shutdown)
               ("C-c C-c s" . lsp-rust-analyzer-status))
   :config
-  ;; uncomment for less flashiness
-  ;; (setq lsp-eldoc-hook nil)
-  ;; (setq lsp-enable-symbol-highlighting nil)
-  ;; (setq lsp-signature-auto-activate nil)
+  ;; comment for more flashiness
+  (setq lsp-eldoc-hook nil)
+  (setq lsp-enable-symbol-highlighting nil)
+  (setq lsp-signature-auto-activate nil)
 
   ;; comment to disable rustfmt on save
   (setq rustic-format-on-save t)
@@ -118,6 +154,7 @@
     ;; no longer be necessary.
     (when buffer-file-name
       (setq-local buffer-save-without-query t))))
+
 (use-package markdown-mode :ensure t)
 (use-package vterm :ensure t)
 (use-package ediprolog :ensure t)
@@ -139,7 +176,7 @@
 
 (setq tramp-default-method "sshx")
 
-(setq grep-command "grep --color -nrH --null -e") 
+(setq grep-command "grep --color -nirH --null -e") 
 
 
 (setq-default indent-tabs-mode nil)
@@ -148,19 +185,10 @@
 (setq c-set-style "linux")
 (setq c-basic-offset 8)
 (c-set-offset 'substatement-open 0)
-(c-add-style "radare2"
-             '((c-basic-offset . 4)
-               (tab-width . 8)
-               (indent-tabs-mode . t)
-               ;;;; You would need (put 'c-auto-align-backslashes 'safe-local-variable 'booleanp) to enable this
-               ;; (c-auto-align-backslashes . nil)
-               (c-offsets-alist
-                (substatement-open . 0)
-                (arglist-intro . ++)
-                (arglist-cont . ++)
-                (arglist-cont-nonempty . ++)
-                (statement-cont . ++)
-                )))
+
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
+(add-hook 'objc-mode-hook 'lsp)
 
 (add-hook 'c-mode-hook
           (lambda ()
@@ -215,6 +243,9 @@
 ; line numbers
 (global-display-line-numbers-mode)
 (setq column-number-mode t)
+
+;; disable weird sound when I make error
+(setq ring-bell-function 'ignore)
 
 
 ; get rid of that org mode html validator thing 
@@ -309,4 +340,3 @@
 
 (provide '.emacs)
 ;;; .emacs ends here
-
