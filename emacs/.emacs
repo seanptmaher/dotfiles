@@ -25,7 +25,7 @@
  '(jdee-db-spec-breakpoint-face-colors (cons "#16161c" "#6a6a6a"))
  '(objed-cursor-color "#e95678")
  '(package-selected-packages
-   '(haskell-mode magit js2-mode tex rustic lsp-ui lsp-mode nov auctex undo-tree hindent editorconfig flycheck evil use-package racket-mode company-jedi jedi elpy visual-regexp-steroids yard-mode enh-ruby-mode rinari robe ruby-end mu4e ox-latex-subfigure ess erlang slime vterm company doom-themes evil-collection ediprolog exwm challenger-deep-theme gorepl-mode go-scratch go-playground go-mode geiser evil-surround htmlize gruvbox-theme evil-paredit paredit rust-mode evil-visual-mark-mode kaolin-themes ein smartrep python-mode request websocket markdown-mode which-key darktooth-theme ample-theme noctilux-theme rainbow-delimiters sublime-themes flatland-theme))
+   '(zig-mode bazel evil-numbers fish-mode haskell-mode magit js2-mode tex rustic lsp-ui lsp-mode nov auctex undo-tree hindent editorconfig flycheck evil use-package racket-mode company-jedi jedi elpy visual-regexp-steroids yard-mode enh-ruby-mode rinari robe ruby-end mu4e ox-latex-subfigure ess erlang slime vterm company doom-themes evil-collection ediprolog exwm challenger-deep-theme gorepl-mode go-scratch go-playground go-mode geiser evil-surround htmlize gruvbox-theme evil-paredit paredit rust-mode evil-visual-mark-mode kaolin-themes ein smartrep python-mode request websocket markdown-mode which-key darktooth-theme ample-theme noctilux-theme rainbow-delimiters sublime-themes flatland-theme))
  '(pdf-view-midnight-colors (cons "#c7c9cb" "#232530"))
  '(rustic-ansi-faces
    ["#232530" "#e95678" "#09f7a0" "#fab795" "#21bfc2" "#6c6f93" "#59e3e3" "#c7c9cb"])
@@ -66,6 +66,8 @@
 ;; END MELPA
 ;;----------------------------------------------
 
+(add-to-list 'load-path "/home/sean/.emacs.d/elisp")
+
 (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
 (setq evil-want-keybinding nil)
 
@@ -81,6 +83,13 @@
 
 (use-package evil-visual-mark-mode :ensure t)
 (use-package evil-surround :ensure t :config (global-evil-surround-mode 1))
+(use-package evil-numbers :ensure t
+  :config
+  (evil-define-key '(normal visual) 'global (kbd "C-c +") 'evil-numbers/inc-at-pt)
+  (evil-define-key '(normal visual) 'global (kbd "C-c -") 'evil-numbers/dec-at-pt)
+  (evil-define-key '(normal visual) 'global (kbd "C-c C-+") 'evil-numbers/inc-at-pt-incremental)
+  (evil-define-key '(normal visual) 'global (kbd "C-c C--") 'evil-numbers/dec-at-pt-incremental)
+  )
 
 ;; (use-package auctex :ensure t)
 (use-package tex
@@ -89,6 +98,7 @@
   :config
   (setq TeX-auto-save t))
 
+(use-package fish-mode :ensure t)
 (use-package which-key :ensure t)
 (use-package paredit :ensure t)
 (use-package evil-paredit :ensure t)
@@ -111,15 +121,7 @@
   ;; (lsp-rust-analyzer-cargo-watch-command "clippy")
   ;; (lsp-eldoc-render-all t)
 
-  (setq lsp-enable-symbol-highlighting nil)
-
-  (setq gc-cons-threshold (* 100 1024 1024)
-        read-process-output-max (* 1024 1024)
-        treemacs-space-between-root-nodes nil
-        company-idle-delay 0.0
-        company-minimum-prefix-length 1
-        lsp-idle-delay 0.1)  ;; clangd is fast
-
+  (setq lsp-headerline-breadcrumb-enable nil)
   (setq lsp-eldoc-hook nil)
   (setq lsp-enable-symbol-highlighting nil)
   (setq lsp-signature-auto-activate nil)
@@ -127,33 +129,24 @@
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
-(use-package rustic :ensure t
-  :bind (:map rustic-mode-map
-              ("M-j" . lsp-ui-imenu)
-              ("M-?" . lsp-find-references)
-              ("C-c C-c l" . flycheck-list-errors)
-              ("C-c C-c a" . lsp-execute-code-action)
-              ("C-c C-c r" . lsp-rename)
-              ("C-c C-c q" . lsp-workspace-restart)
-              ("C-c C-c Q" . lsp-workspace-shutdown)
-              ("C-c C-c s" . lsp-rust-analyzer-status))
-  :config
-  ;; comment for more flashiness
-  (setq lsp-eldoc-hook nil)
-  (setq lsp-enable-symbol-highlighting nil)
-  (setq lsp-signature-auto-activate nil)
+(setq lsp-enable-symbol-highlighting nil)
+(setq eldoc-idle-delay 0.15)
 
-  ;; comment to disable rustfmt on save
-  (setq rustic-format-on-save t)
-  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook)
+(setq gc-cons-threshold (* 2 1024 1024)
+      read-process-output-max (* 1024 1024)
+      treemacs-space-between-root-nodes nil
+      company-idle-delay 0.0
+      company-minimum-prefix-length 1
+      lsp-idle-delay 0.1)  ;; clangd is fast
 
-  (defun rk/rustic-mode-hook ()
-    ;; so that run C-c C-c C-r works without having to confirm, but don't try to
-    ;; save rust buffers that are not file visiting. Once
-    ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
-    ;; no longer be necessary.
-    (when buffer-file-name
-      (setq-local buffer-save-without-query t))))
+(setq eldoc-echo-area-use-multiline-p nil)
+
+;; (add-hook 'lsp-eldoc-hook
+;;           (lambda ()
+;;             (if eldoc-last-message 
+;;                 (message
+;;                  (car (split-string eldoc-last-message "\n")))
+;;               (message "fuck bro"))))
 
 (use-package markdown-mode :ensure t)
 (use-package vterm :ensure t)
@@ -174,10 +167,11 @@
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
   (setq nov-text-width 80))
 
+(use-package bazel :ensure t)
+
 (setq tramp-default-method "sshx")
 
 (setq grep-command "grep --color -nirH --null -e") 
-
 
 (setq-default indent-tabs-mode nil)
 (setq indent-tabs-mode nil)
@@ -201,6 +195,8 @@
 ; ignore capitalization in eshell autocomplete
 (setq pcomplete-ignore-case t)
 
+(setq-default fill-column 80)
+
 ; this should save the backup files in ~/.emacs_saves to reduce clutter
 (setq backup-directory-alist '(("" . "~/.emacs.d/backup")))
 
@@ -219,7 +215,7 @@
 
 ; set proper font
 (add-to-list 'default-frame-alist
-	     '(font . "Agave-12"))
+	     '(font . "Agave-11"))
 
 (global-visual-line-mode 1) ; wrap lines rounded to words to make reading easier
 (global-hl-line-mode 1) ; highlight current row
@@ -262,6 +258,22 @@
 (global-set-key (kbd "M-@") 'sudo-shell-command)
 (global-set-key (kbd "M-#") 'async-shell-command)
 (global-set-key (kbd "M-$") 'vterm)
+
+(require 'google-c-style)
+
+(add-to-list 'auto-mode-alist '("\\.mm\\'" . c++-mode))
+(add-hook 'c-mode-hook
+          (lambda ()
+            (when (string-match "/home/sean/documents/code/chromium/src/.*" buffer-file-name)
+              (c++-mode))))
+
+(add-hook 'c-mode-common-hook (lambda () (set-fill-column 80)))
+(add-hook 'c++-mode-hook (lambda () (set-fill-column 80)))
+
+(add-hook 'c++-mode-hook      'google-set-c-style)
+(add-hook 'c-mode-common-hook 'google-set-c-style)
+(add-hook 'objc-mode-hook     'google-set-c-style)
+
 ;;; End misc bindings
 
 ;;; LISP
@@ -338,5 +350,14 @@
 ;;; END R
 
 
+;;; HOON
+(require 'hoon-mode)
+(add-hook 'hoon-mode
+          (lambda ()
+            (define-key hoon-mode-map (kbd "C-c r") 'hoon-eval-region-in-herb)
+            (define-key hoon-mode-map (kbd "C-c b") 'hoon-eval-buffer-in-herb)))
+;;; END HOON
+
 (provide '.emacs)
 ;;; .emacs ends here
+
