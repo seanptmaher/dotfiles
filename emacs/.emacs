@@ -171,24 +171,7 @@
 
 (setq tramp-default-method "sshx")
 
-(setq grep-command "grep --color -nirH --null -e") 
-
-(setq-default indent-tabs-mode nil)
-(setq indent-tabs-mode nil)
-(setq-default tab-width 8)
-(setq c-set-style "linux")
-(setq c-basic-offset 8)
-(c-set-offset 'substatement-open 0)
-
-(add-hook 'c-mode-hook 'lsp)
-(add-hook 'c++-mode-hook 'lsp)
-(add-hook 'objc-mode-hook 'lsp)
-
-(add-hook 'c-mode-hook
-          (lambda ()
-            (setf gdb-many-windows t)
-            (local-set-key (kbd "C-c C-i") 'compile)
-            (local-set-key (kbd "C-c C-r") 'gdb)))
+(setq grep-command "grep --color -nirH --null -e ") 
 
 ; remove splash screen
 (setq inhibit-splash-screen t)
@@ -243,21 +226,27 @@
 ;; disable weird sound when I make error
 (setq ring-bell-function 'ignore)
 
+(global-prettify-symbols-mode)
 
 ; get rid of that org mode html validator thing 
 (setq org-html-validation-link nil)
 
-;;; Misc bindings
-(global-prettify-symbols-mode)
+;;; C STUFF
+(setq-default indent-tabs-mode nil)
+(setq indent-tabs-mode nil)
+(setq-default tab-width 8)
+(setq c-set-style "linux")
+(setq c-basic-offset 8)
+(c-set-offset 'substatement-open 0)
 
-(defun sudo-shell-command (command)
-  (interactive "MShell command (root): ")
-  (with-temp-buffer
-    (cd "/sudo::/")
-    (async-shell-command command)))
-(global-set-key (kbd "M-@") 'sudo-shell-command)
-(global-set-key (kbd "M-#") 'async-shell-command)
-(global-set-key (kbd "M-$") 'vterm)
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
+(add-hook 'objc-mode-hook 'lsp)
+(add-hook 'c-mode-hook
+          (lambda ()
+            (setf gdb-many-windows t)
+            (local-set-key (kbd "C-c C-i") 'compile)
+            (local-set-key (kbd "C-c C-r") 'gdb)))
 
 (require 'google-c-style)
 
@@ -273,6 +262,55 @@
 (add-hook 'c++-mode-hook      'google-set-c-style)
 (add-hook 'c-mode-common-hook 'google-set-c-style)
 (add-hook 'objc-mode-hook     'google-set-c-style)
+
+(defun next-file (filename)
+  (let* ((file (file-name-nondirectory filename))
+         (dir (file-name-directory filename))
+         (candidates
+          (cond
+           ((string-match ".*_unittest.cc$" file)
+            (list 
+             (string-replace "_unittest.cc" ".h" file)
+             (string-replace "_unittest.cc" ".cc" file)
+             file))
+           ((string-match ".*.h$" file)
+            (list 
+             (string-replace ".h" ".cc" file)
+             (string-replace ".h" "_unittest.cc" file)
+             file))
+           ((string-match ".*.cc$" file)
+            (list 
+             (string-replace ".cc" "_unittest.cc" file)
+             (string-replace ".cc" ".h" file)
+             file)))))
+    ;; candidates
+    (file-name-concat dir (cl-find-if (lambda (x) (file-exists-p (file-name-concat dir x))) candidates))))
+
+;; (next-file
+;;  "/home/sean/documents/code/chromium/src/base/task/thread_pool/thread_group_semaphore.cc")
+
+(defun find-next-file ()
+  (interactive)
+  (unless buffer-file-name
+    (user-error "The current buffer isn't visiting a file"))
+  (let ((newname (next-file buffer-file-name)))
+    (if (null newname)
+        (error (concat "No next file for " buffer-file-name))
+      (find-file newname))))
+
+(add-hook 'c++-mode-hook
+          (lambda () (local-set-key (kbd "C-c o") 'find-next-file)))
+;;; END C++ BINDINGS
+
+;;; Misc bindings
+(defun sudo-shell-command (command)
+  (interactive "MShell command (root): ")
+  (with-temp-buffer
+    (cd "/sudo::/")
+    (async-shell-command command)))
+(global-set-key (kbd "M-@") 'sudo-shell-command)
+(global-set-key (kbd "M-#") 'async-shell-command)
+(global-set-key (kbd "M-$") 'vterm)
 
 ;;; End misc bindings
 
