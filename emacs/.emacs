@@ -312,6 +312,12 @@
 (global-set-key (kbd "M-#") 'async-shell-command)
 (global-set-key (kbd "M-$") 'vterm)
 
+;; Source: https://www.emacswiki.org/emacs/misc-cmds.el
+(defun revert-buffer-no-confirm ()
+    "Revert buffer without confirmation."
+    (interactive)
+    (revert-buffer :ignore-auto :noconfirm))
+
 (global-set-key (kbd "C-x C-r") 'revert-buffer-no-confirm)
 
 ;;; End misc bindings
