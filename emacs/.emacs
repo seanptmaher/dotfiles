@@ -312,6 +312,8 @@
 (global-set-key (kbd "M-#") 'async-shell-command)
 (global-set-key (kbd "M-$") 'vterm)
 
+(global-set-key (kbd "C-x C-r") 'revert-buffer-no-confirm)
+
 ;;; End misc bindings
 
 ;;; LISP
