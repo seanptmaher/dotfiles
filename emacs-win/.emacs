@@ -139,7 +139,7 @@
   ;; (lsp-rust-analyzer-server-display-inlay-hints t)
 
   (setq lsp-enable-symbol-highlighting nil)
-  (setq eldoc-idle-delay 0.15)
+  (setq eldoc-idle-delay 0.05)
   (setq lsp-clients-clangd-args '("-j" "1" "--background-index-priority=low"))
   (setq lsp-clangd-binary-path "c:\\src\\chromium\\src\\third_party\\llvm-build\\Release+Asserts\\bin\\clangd")
 
@@ -479,7 +479,6 @@
 (setq exec-path (append exec-path (list (expand-file-name "/opt/texlive/2020/bin/x86_64-linux"))))
 (setq org-latex-compiler "pdflatex")
 ;;; END TEX
-
 
 ;;; Latex/org-mode/r
 (with-eval-after-load 'ox-latex
